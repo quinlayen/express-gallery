@@ -8,5 +8,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
 app.get('/', (req,res)=>{
-    console.log('req.body', req.body);
+    res.send('sanity check')
+})
+
+
+app.listen(PORT, ()=>{
+    console.log('Listening to everything you are doing on port 3000')
 })
