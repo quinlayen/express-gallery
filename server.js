@@ -6,10 +6,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(require('./routes/photosRoute'))
 
-app.get('/', (req,res)=>{
-    res.send('sanity check')
-})
 
 
 app.listen(PORT, ()=>{
