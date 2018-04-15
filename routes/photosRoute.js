@@ -8,7 +8,13 @@ router.get('/', (req,res)=>{
     Photos 
     .fetchAll()
     .then( data=>{
-        res.json(data.serialize())
+        const dataObj = {photos:data.toJSON()}
+        const photos = dataObj.photos;
+        console.log('data', dataObj.photos);
+        res.render('templates/index.hbs', {
+            pageTitle: 'Photo Gallery',
+            photos
+        })
     })
     .catch(err=>{
         res.json(err)
