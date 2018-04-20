@@ -24,9 +24,7 @@ router.get('/gallery/new', (req, res) => {
   res.render('templates/new.hbs', {
     pageTitle: 'Enter a new photo'
   })
-  .catch(err=>{
-      res.json(err);
-  })
+ 
 });
 
 // show a form field to edit an existing photo
@@ -63,7 +61,9 @@ router.post('/gallery', (req, res) => {
     link: req.body.link,
     description: req.body.description
   };
+  console.log('payload', payload);
   Photos.forge(payload)
+
     .save()
     .then(data => {
       res.redirect('/');

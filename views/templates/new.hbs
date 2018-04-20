@@ -1,17 +1,23 @@
-<h1>{{ pageTitle}}</h1>
+<h1>{{ pageTitle }}</h1>
 
-<div class="container">
+<div class="container" style="margin-top:20px;">
 
-    <form>
-        <label for="author">Author</label>
-        <input type="text">
+    <form method="post" action="/gallery">
+        <div class="form-group row">
+            <label class="col-sm-3">Author</label>
+            <div class="col-md-9">
+                <input type="text" class="-form-control" name="author">
+            </div>
+              <label class="col-sm-3">Link</label>
+            <div class="col-md-9">
+                <input type="text" class="-form-control" name="link">
+            </div>
+              <label class="col-sm-3">Description</label>
+            <div class="col-md-9">
+                <input type="text" class="-form-control" name="description">
+            </div>
 
-        <label for="link">link</label>
-        <input type="text">
-
-        <label for="description">description</label>
-        <input type="text">
-
-        <button type="submit">Submit</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
     </form>
 </div>
