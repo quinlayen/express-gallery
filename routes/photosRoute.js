@@ -29,8 +29,10 @@ router.get('/gallery/new', (req, res) => {
 
 // show a form field to edit an existing photo
 router.get('/gallery/:id/edit', (req, res) => {
+  const {id} = req.params;
   res.render('templates/edit.hbs',{
-      pagetitle: 'Edit an photo'
+      pageTitle: 'Edit this photo',
+      id
   });
 });
 
@@ -61,24 +63,21 @@ router.post('/gallery', (req, res) => {
     link: req.body.link,
     description: req.body.description
   };
-  console.log('payload', payload);
-  Photos.forge(payload)
-
-    .save()
-    .then(data => {
-      res.redirect('/');
-    })
-    .catch(err => {
-      res.json(err);
-    });
-});
-
-// edit an existing photo
+  
+  // edit an existing photo
 router.put('/gallery/:id', (req, res) => {
   const { id } = req.params;
-  const payload = {
-    author: req.body.author
-  };
+  let payload = {};
+  for (key in req.body){
+    //console.log('req.body[key]', req.body[key]);
+      if(req.body[key]){
+      payload.key = req.body;
+
+    }
+  }
+  //console.log('query', query);
+
+  console.log('this is a put', payload);
   Photos.where({ photo_id: id })
     .fetch()
     .then(data => {
@@ -91,6 +90,18 @@ router.put('/gallery/:id', (req, res) => {
       res.json(err);
     });
 });
+  console.log('this is a post', payload);
+  Photos.forge(payload)
+    .save()
+    .then(data => {
+      res.redirect('/');
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
+
+
 
 // delete an exisiting photo
 router.delete('/gallery/:id', (req, res) => {
