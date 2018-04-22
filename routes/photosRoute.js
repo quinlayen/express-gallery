@@ -56,6 +56,7 @@ router.get('/gallery/:id', (req, res) => {
     });
 });
 
+
 // create a new photo
 router.post('/gallery', (req, res) => {
   const payload = {
@@ -102,7 +103,6 @@ router.put('/gallery/:id', (req, res) => {
 });
 
 
-
 // delete an exisiting photo
 router.delete('/gallery/:id', (req, res) => {
   const { id } = req.params;
@@ -116,5 +116,8 @@ router.delete('/gallery/:id', (req, res) => {
       res.json(err);
     });
 });
+
+
+
 
 module.exports = router;
