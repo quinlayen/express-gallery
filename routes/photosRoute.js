@@ -27,6 +27,7 @@ router.get('/gallery/new', (req, res) => {
  
 });
 
+
 // show a form field to edit an existing photo
 router.get('/gallery/:id/edit', (req, res) => {
   const {id} = req.params;

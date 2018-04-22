@@ -92,6 +92,8 @@ router.post('/auth/logout', (req, res) => {
   res.redirect('/');
 });
 
+//this code determines if the user is authenticated and allows them to use the app
+
 const isAuthenticated = (req, res, done) => {
   if (req.isAuthenticated()) {
     done();
@@ -100,8 +102,13 @@ const isAuthenticated = (req, res, done) => {
   }
 };
 
-//this code determines if the user is authenticated and allows them to use the app
 router.get('/auth/secret', isAuthenticated, (req, res) => {
   res.send('You found the secret');
 });
+
+router.get('/login', (req,res)=>{
+    res.render('templates/login.hbs',{
+        pageTitle: 'Please log in to continue'
+    })
+})
 module.exports = router;
