@@ -22,10 +22,9 @@ app.engine('hbs', hbs({
 
 app.set('view engine', 'hbs');
 app.use(logger('dev'));
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
-app.use(require('./routes/photosRoute'))
 app.use(methodOverride('_method'));
 app.use(session({
     store: new RedisStore(),
@@ -35,6 +34,7 @@ app.use(session({
 }))
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(require('./routes/photosRoute'));
 app.use('/api', AuthRoutes);
 
 
