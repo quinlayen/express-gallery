@@ -7,7 +7,8 @@ module.exports = {
     connection: {
       host: '127.0.0.1',
       database: 'express_gallery_db',
-      user: 'express_gallery_user'
+      user: 'express_gallery_user',
+      password: 'password'
     },
     migrations: {
       directory: __dirname + '/db/migrations'
