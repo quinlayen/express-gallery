@@ -7,15 +7,15 @@ const bcrypt = require('bcrypt');
 
 passport.serializeUser((user, done) => {
   console.log('serializeUser', user);
-  done(null, {email:user.email});
+  done(null, { email: user.email });
 });
 
 passport.deserializeUser((user, done) => {
-    Users.where({ email: user.email })
+  Users.where({ email: user.email })
     .fetch()
     .then(user => {
-        user = user.toJSON();
-        console.log('deserializing User', user);
+      user = user.toJSON();
+      console.log('deserializing User', user);
       done(null, user);
     })
     .catch(err => {
@@ -25,26 +25,25 @@ passport.deserializeUser((user, done) => {
 
 passport.use(
   new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
-      
     Users.where({ email })
       .fetch()
       .then(user => {
-          user = user.toJSON();
-          console.log('user in localStrategy', user);
-          if(user.password === password){
-              console.log('user.password', user.password);
-              done(null,user)
-          }else{
-              console.log('authentication failed')
-              done(null,false)
+        user = user.toJSON();
+        
+        // if (user.password === password) {
+        //   console.log('user.password', user.password);
+        //   done(null, user);
+        // } else {
+        //   console.log('authentication failed');
+        //   done(null, false);
+        // }
+        bcrypt.compare(password, user.password).then(res => {
+          if (res) {
+            done(null, user);
+          } else {
+            done(null, false);
           }
-        // bcrypt.compare(password, user.password).then(res => {
-        //   if (res) {
-        //     done(null, user);
-        //   } else {
-        //     done(null, false);
-        //   }
-        // });
+        });
       })
       .catch(err => {
         done(null, false);
@@ -52,11 +51,28 @@ passport.use(
   })
 );
 
+const SALT_ROUND = 12;
+
 // authentication routes
 
 //this code registers a new user
 router.post('/auth/register', (req, res) => {
-  console.log('req.body', req.body);
+  const { email, password } = req.body;
+  bcrypt
+    .genSalt(12)
+    .then(salt => {
+      return bcrypt.hash(password, salt);
+    })
+    .then(hash => {
+      return Users.forge({ email, password: hash }).save();
+    })
+    .then(user => {
+      user = user.toJSON();
+      res.json(user);
+    })
+    .catch(err => {
+      res.json(err);
+    });
 });
 
 //this code logs a user in
@@ -76,4 +92,16 @@ router.post('/auth/logout', (req, res) => {
   res.redirect('/');
 });
 
+const isAuthenticated = (req, res, done) => {
+  if (req.isAuthenticated()) {
+    done();
+  } else {
+    res.redirect('/');
+  }
+};
+
+//this code determines if the user is authenticated and allows them to use the app
+router.get('/auth/secret', isAuthenticated, (req, res) => {
+  res.send('You found the secret');
+});
 module.exports = router;
